@@ -7,11 +7,14 @@
     "build": "parcel build src/index.html"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.15.4",
     "parcel": "^2.6.2"
   },
   "dependencies": {
     "@cubejs-client/core": "^0.31.0",
     "@kurkle/color": "^0.4.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
     "chart.js": "^4.0.0"
   }
 }
