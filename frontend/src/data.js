@@ -1,6 +1,33 @@
 import colorLib from '@kurkle/color';
 import Chart from 'chart.js/auto'
 
+function humandReadbleSeconds(seconds) {
+    const units = {
+        "year": 24 * 60 * 60 * 365,
+        "month": 24 * 60 * 60 * 30,
+        "week": 24 * 60 * 60 * 7,
+        "day": 24 * 60 * 60,
+        "hour": 60 * 60,
+        "minute": 60,
+        "second": 1,
+    }
+
+    var result = []
+
+    for (let name in units) {
+        const p = Math.floor(seconds / units[name]);
+        if (p === 1) result.push(p + " " + name);
+        if (p >= 2) result.push(p + " " + name + "s");
+        seconds %= units[name]
+    }
+    let prefix = "";
+    if (result.length > 2) {
+        result = result.slice(0, 2);
+        prefix = "~"
+    }
+
+    return prefix + result.join(", ");
+}
 
 (async function () {
     function transparentize(value, opacity) {
@@ -46,6 +73,6 @@ import Chart from 'chart.js/auto'
     const sums = require('./data/sums.json');
     document.getElementById("followers").textContent = sums.followers;
     document.getElementById("listeners").textContent = sums.listeners;
-    document.getElementById("consumed").textContent = sums.consumed;
+    document.getElementById("consumed").textContent = humandReadbleSeconds(sums.consumed);
     document.getElementById("streams").textContent = sums.streams;
 })();
