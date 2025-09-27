@@ -22,15 +22,15 @@ class Amazon(BaseNormalizationStrategy):
         """
         data = json.loads(response.data.decode("utf-8"))["data"]
 
+        # the total or aggregate counts are not useful, the scraper needs to be extended to cover series as well
         if "followsAggregate" in data:
             pass
         if "followsTotals" in data:
-            follower_count = data["followsTotals"]["total"]
-            # TODO what is the date here?
+            pass
         if "listenersAggregate" in data:
             pass
         if "listenersTotals" in data:
-            print("listenersTotals", data["listenersTotals"])
+            pass
         if "playsAggregate" in data:
             pass
         if "playsTimeSeries" in data:
@@ -38,7 +38,7 @@ class Amazon(BaseNormalizationStrategy):
                 k = row["time"][:10]
                 by_date[k].stream_count = max(by_date[k].stream_count, row["value"], key=NoneComparator)
         if "playsTotals" in data:
-            print("playsTotals", data["playsTotals"])
+            pass
         if "startsAggregate" in data:
             pass
         if "startsTimeSeries" in data:
@@ -48,4 +48,4 @@ class Amazon(BaseNormalizationStrategy):
                     by_date[k].stream_start_count, row["value"], key=NoneComparator
                 )
         if "startsTotals" in data:
-            print("startsTotals", data["startsTotals"])
+            pass
