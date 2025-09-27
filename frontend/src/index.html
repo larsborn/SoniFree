@@ -8,31 +8,107 @@
     <script type="module" src="main.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <canvas id="follower_count"></canvas>
-        </div>
-        <div class="col-6">
-            <canvas id="listener_count"></canvas>
+<header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <svg width="12mm" height="12mm" viewBox="0 0 120 120" class="me-2">
+                    <defs id="defs1"/>
+                    <g id="layer1">
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="M 103.42592,52.791829 C 103.42592,28.808355 83.983467,9.3659077 59.999995,9.3659087 36.016522,9.3659097 16.574076,28.808357 16.574076,52.791829"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 92.164697,52.791829 c 0,-17.764076 -14.40063,-32.164704 -32.164702,-32.164702 -17.764075,10e-7 -32.164702,14.400628 -32.164702,32.164702"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 40.098646,56.421642 h 6.792003"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4"
+                              d="m 80.677807,52.791617 c -1.2e-4,-11.419989 -9.25782,-20.67769 -20.67781,-20.677807 -11.41999,1.17e-4 -20.677691,9.257818 -20.677808,20.677807 v 25.481129 c 1.18e-4,11.42 9.257818,20.6777 20.677808,20.67782 11.41999,-1.2e-4 20.67769,-9.25782 20.67781,-20.67782 z"/>
+                        <path style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:4;stroke-linecap:round"
+                              d="m -138.0009,233.81522 c 0,-67.58379 88.648019,-122.37128 198.000897,-122.37128 109.352883,0 198.000903,54.78749 198.000903,122.37128"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:3.41389;stroke-linecap:round"
+                              d="M 59.999997,99.045916 V 111.6738 Z"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 40.098646,63.420357 h 6.792003"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 40.098646,70.419071 h 6.792003"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 40.098646,77.417786 h 6.792003"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 72.928977,56.421642 h 6.79201"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 72.928977,63.420357 h 6.79201"/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 72.928977,70.419071 h 6.79201" °/>
+                        <path style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-dasharray:none"
+                              d="m 72.928977,77.417786 h 6.79201"/>
+                    </g>
+                </svg>
+                <strong>SoniFree</strong>
+            </a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <canvas id="consumption_seconds"></canvas>
+</header>
+<main role="main" class="pt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Followers</div>
+                    <div class="card-body">
+                        <h5 class="card-title">123</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Listeners</div>
+                    <div class="card-body">
+                        <h5 class="card-title">123</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Consumed Time</div>
+                    <div class="card-body">
+                        <h5 class="card-title">123 days</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">Stream Count</div>
+                    <div class="card-body">
+                        <h5 class="card-title">123</h5>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-6">
-            <canvas id="stream_count"></canvas>
+        <div class="row">
+            <div class="col-6">
+                <canvas id="follower_count"></canvas>
+            </div>
+            <div class="col-6">
+                <canvas id="listener_count"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <canvas id="consumption_seconds"></canvas>
+            </div>
+            <div class="col-6">
+                <canvas id="stream_count"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <canvas id="stream_start_count"></canvas>
+            </div>
+            <div class="col-6">
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <canvas id="stream_start_count"></canvas>
-        </div>
-        <div class="col-6">
-        </div>
-    </div>
-</div>
+</main>
 <script type="module" src="data.js"></script>
 </body>
 </html>
