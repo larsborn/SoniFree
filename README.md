@@ -10,7 +10,6 @@ being tied to a proprietary publisher or analytics platform. This app can be ful
 * 👥 Standardized Listener, Follower, and Subscriber Data
 * 📈 Central Dashboard
 * 🔒 Privacy-respecting
-* 🧩 Extensible
 * 💻 Open Source / Self-hosted
 
 ![Screenshot of SoniFree Dashboard, showing graphs going upwards](/resources/screenshot1.png?raw=true "SoniFree Dashboard")
