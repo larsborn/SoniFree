@@ -28,7 +28,7 @@ giving creators reliable insights without sacrificing independence.
 
 | Provider | Scraper  | Normalizer       |
 |----------|----------|------------------|
-| Amazon   | ✅Working | 🚧WIP            |
+| Amazon   | 🚧WIP    | 🚧WIP            |
 | Apple    | 🚧WIP    | ❌Not Implemented |
 | Spotify  | ✅Working | ✅Working         |
 

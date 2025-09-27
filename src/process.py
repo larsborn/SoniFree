@@ -6,9 +6,9 @@ import os
 
 from lib.chart_js import ChartJsJsonGenerator
 from lib.factory import LoggerFactory, KeyFactory
-from normalizer.transformer import Transformer
 from lib.responses import ResponseManager
 from lib.validator import Validator
+from normalizer.transformer import Transformer
 
 
 def main():
@@ -34,7 +34,17 @@ def main():
     char_generator = ChartJsJsonGenerator(transformer)
     validator = Validator(logger)
     response_manager = ResponseManager(args.meta_dir, args.payload_dir)
-    by_date = transformer.provider_to_date_flip(transformer.normalize(response_manager.find()))
+    by_provider = transformer.normalize(response_manager.find())
+    by_date = transformer.provider_to_date_flip(by_provider)
+
+    all_followers = 0
+    follower_count_by_provider = {}
+    for provider, items in by_provider.items():
+        follower_count_by_provider[provider] = 0
+        for date, point in items.items():
+            all_followers += point.follower_count
+            follower_count_by_provider[provider] += point.follower_count
+
     validator.validate(by_date)
 
     if args.output_strategy == "chartjs":
@@ -66,10 +76,17 @@ def main():
                 json.dump(config, fp, indent=4)
             logger.info(f"Wrote {json_file_name}.")
 
+        json_file_name = os.path.join(args.json_result_dir, "sums.json")
+        with open(json_file_name, "w") as fp:
+            followers_dict = {"_all": all_followers}
+            for provider, cnt in follower_count_by_provider.items():
+                followers_dict[provider.value] = cnt
+            json.dump({"followers": followers_dict}, fp, indent=4)
+        logger.info(f"Wrote {json_file_name}.")
+
     elif args.output_strategy == "elastic":
         for date in sorted(by_date.keys()):
-            by_provider = by_date[date]
-            for provider, point in by_provider.items():
+            for provider, point in by_date[date].items():
                 data = point.dict
                 data["_id"] = KeyFactory.for_state(provider, date)
                 data["date"] = date

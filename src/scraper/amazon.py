@@ -50,7 +50,29 @@ class Amazon(Selenium, Scraper):
 
         self._flush_performance_log()
         item.click()
-        time.sleep(1)
+
+        diagram_button = self._selenium.find_element(
+            By.CSS_SELECTOR, 'music-button[data-id="selectAnalyticsTypeDropdown-podcasterAnalyticsOverview"]'
+        )
+        self._wait_until(diagram_button)
+        diagram_button.click()
+
+        # data-ids
+        for data_id in (
+            "selectAnalyticsTypeDropdownStarts-podcasterAnalyticsOverview",  # Starts:
+            "selectAnalyticsTypeDropdownPlays-podcasterAnalyticsOverview",  # Plays:
+            "selectAnalyticsTypeDropdownListeners-podcasterAnalyticsOverview",  # Listeners:
+            "selectAnalyticsTypeDropdownEngagedListeners-podcasterAnalyticsOverview",  # Engaged Listeners:
+            "selectAnalyticsTypeDropdownFollowers-podcasterAnalyticsOverview",  # Followers:
+        ):
+            pulldown_option = self._selenium.find_element(By.CSS_SELECTOR, f'button[data-id="{data_id}"]')
+            self._wait_until(pulldown_option)
+            pulldown_option.click()
+
+            time.sleep(1)
+
+        # import IPython
+        # IPython.embed()
 
         for message in self._get_performance_log_response_messages():
             url = self._get_performance_log_url(message)
