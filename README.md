@@ -13,6 +13,8 @@ being tied to a proprietary publisher or analytics platform. This app can be ful
 * 🧩 Extensible
 * 💻 Open Source / Self-hosted
 
+![Screenshot of SoniFree Dashboard, showing graphs going upwards](/resources/screenshot1.png?raw=true "SoniFree Dashboard")
+
 ## Why It Matters
 
 Independent podcasters often choose to self-host to:
