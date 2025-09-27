@@ -42,4 +42,10 @@ import Chart from 'chart.js/auto'
         "backgroundColor": transparentize(dataset.borderColor, 0.5),
     }))
     new Chart(document.getElementById('stream_start_count'), streamStartCountJson);
+
+    const sums = require('./data/sums.json');
+    document.getElementById("followers").textContent = sums.followers;
+    document.getElementById("listeners").textContent = sums.listeners;
+    document.getElementById("consumed").textContent = sums.consumed;
+    document.getElementById("streams").textContent = sums.streams;
 })();

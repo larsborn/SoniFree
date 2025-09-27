@@ -37,14 +37,6 @@ def main():
     by_provider = transformer.normalize(response_manager.find())
     by_date = transformer.provider_to_date_flip(by_provider)
 
-    all_followers = 0
-    follower_count_by_provider = {}
-    for provider, items in by_provider.items():
-        follower_count_by_provider[provider] = 0
-        for date, point in items.items():
-            all_followers += point.follower_count
-            follower_count_by_provider[provider] += point.follower_count
-
     validator.validate(by_date)
 
     if args.output_strategy == "chartjs":
@@ -76,12 +68,22 @@ def main():
                 json.dump(config, fp, indent=4)
             logger.info(f"Wrote {json_file_name}.")
 
+        sums = {
+            "followers": 0,
+            "listeners": 0,
+            "consumed": 0,
+            "streams": 0,
+        }
+        for provider, items in by_provider.items():
+            for date, point in items.items():
+                sums["followers"] = max(point.follower_count, sums["followers"])
+                sums["listeners"] = max(point.listener_count, sums["listeners"])
+                sums["consumed"] = max(point.consumption_seconds, sums["consumed"])
+                sums["streams"] = max(point.stream_count, sums["streams"])
+
         json_file_name = os.path.join(args.json_result_dir, "sums.json")
         with open(json_file_name, "w") as fp:
-            followers_dict = {"_all": all_followers}
-            for provider, cnt in follower_count_by_provider.items():
-                followers_dict[provider.value] = cnt
-            json.dump({"followers": followers_dict}, fp, indent=4)
+            json.dump(sums, fp, indent=4)
         logger.info(f"Wrote {json_file_name}.")
 
     elif args.output_strategy == "elastic":

@@ -1,4 +1,4 @@
-frontend/src/*.json
+frontend/src/**/*.json
 frontend/dist
 frontend/node_modules
 frontend/.parcel-cache
