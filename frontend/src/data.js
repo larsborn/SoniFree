@@ -8,35 +8,35 @@ import Chart from 'chart.js/auto'
         return colorLib(value).alpha(alpha).rgbString();
     }
 
-    const followerCountJson = require('./follower_count.json');
+    const followerCountJson = require('./data/follower_count.json');
     followerCountJson.data.datasets = followerCountJson.data.datasets.map((dataset) => ({
         ...dataset,
         "backgroundColor": transparentize(dataset.borderColor, 0.5),
     }))
     new Chart(document.getElementById('follower_count'), followerCountJson);
 
-    const listenerCountJson = require('./listener_count.json');
+    const listenerCountJson = require('./data/listener_count.json');
     listenerCountJson.data.datasets = listenerCountJson.data.datasets.map((dataset) => ({
         ...dataset,
         "backgroundColor": transparentize(dataset.borderColor, 0.5),
     }))
     new Chart(document.getElementById('listener_count'), listenerCountJson);
 
-    const consumptionSecondsCountJson = require('./consumption_seconds.json');
+    const consumptionSecondsCountJson = require('./data/consumption_seconds.json');
     consumptionSecondsCountJson.data.datasets = consumptionSecondsCountJson.data.datasets.map((dataset) => ({
         ...dataset,
         "backgroundColor": transparentize(dataset.borderColor, 0.5),
     }))
     new Chart(document.getElementById('consumption_seconds'), consumptionSecondsCountJson);
 
-    const streamCountJson = require('./stream_count.json');
+    const streamCountJson = require('./data/stream_count.json');
     streamCountJson.data.datasets = streamCountJson.data.datasets.map((dataset) => ({
         ...dataset,
         "backgroundColor": transparentize(dataset.borderColor, 0.5),
     }))
     new Chart(document.getElementById('stream_count'), streamCountJson);
 
-    const streamStartCountJson = require('./stream_start_count.json');
+    const streamStartCountJson = require('./data/stream_start_count.json');
     streamStartCountJson.data.datasets = streamStartCountJson.data.datasets.map((dataset) => ({
         ...dataset,
         "backgroundColor": transparentize(dataset.borderColor, 0.5),

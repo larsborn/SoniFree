@@ -24,7 +24,7 @@ def main():
     parser.add_argument(
         "--json-result-dir",
         default=os.getenv(
-            "JSON_RESULT_DIR", os.path.join(os.path.dirname(__file__), "..", "frontend", "src")
+            "JSON_RESULT_DIR", os.path.join(os.path.dirname(__file__), "..", "frontend", "src", "data")
         ),
     )
     args = parser.parse_args()
