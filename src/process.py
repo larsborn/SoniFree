@@ -6,6 +6,7 @@ import os
 
 from lib.chart_js import ChartJsJsonGenerator
 from lib.factory import LoggerFactory, KeyFactory
+from lib.repository import FollowerRepository, ListenerRepository, ConsumptionRepository, StreamRepository
 from lib.responses import ResponseManager
 from lib.validator import Validator
 from normalizer.transformer import Transformer
@@ -35,6 +36,10 @@ def main():
     validator = Validator(logger)
     response_manager = ResponseManager(args.meta_dir, args.payload_dir)
     by_provider = transformer.normalize(response_manager.find())
+    follower_repository = FollowerRepository(by_provider)
+    listener_repository = ListenerRepository(by_provider)
+    consumption_repository = ConsumptionRepository(by_provider)
+    stream_repository = StreamRepository(by_provider)
     by_date = transformer.provider_to_date_flip(by_provider)
 
     validator.validate(by_date)
@@ -68,22 +73,18 @@ def main():
                 json.dump(config, fp, indent=4)
             logger.info(f"Wrote {json_file_name}.")
 
-        sums = {
-            "followers": 0,
-            "listeners": 0,
-            "consumed": 0,
-            "streams": 0,
-        }
-        for provider, items in by_provider.items():
-            for date, point in items.items():
-                sums["followers"] = max(point.follower_count, sums["followers"])
-                sums["listeners"] = max(point.listener_count, sums["listeners"])
-                sums["consumed"] = max(point.consumption_seconds, sums["consumed"])
-                sums["streams"] = max(point.stream_count, sums["streams"])
-
         json_file_name = os.path.join(args.json_result_dir, "sums.json")
         with open(json_file_name, "w") as fp:
-            json.dump(sums, fp, indent=4)
+            json.dump(
+                {
+                    "followers": follower_repository.sum(),
+                    "listeners": listener_repository.sum(),
+                    "consumed": consumption_repository.sum(),
+                    "streams": stream_repository.sum(),
+                },
+                fp,
+                indent=4,
+            )
         logger.info(f"Wrote {json_file_name}.")
 
     elif args.output_strategy == "elastic":
