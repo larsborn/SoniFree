@@ -70,9 +70,9 @@ function humandReadbleSeconds(seconds) {
     }))
     new Chart(document.getElementById('stream_start_count'), streamStartCountJson);
 
-    const sums = require('./data/sums.json');
-    document.getElementById("followers").textContent = sums.followers;
-    document.getElementById("listeners").textContent = sums.listeners;
-    document.getElementById("consumed").textContent = humandReadbleSeconds(sums.consumed);
-    document.getElementById("streams").textContent = sums.streams;
+    const aggregates = require('./data/aggregates.json');
+    document.getElementById("followers").textContent = aggregates.sum.followers;
+    document.getElementById("listeners").textContent = aggregates.sum.listeners;
+    document.getElementById("consumed").textContent = humandReadbleSeconds(aggregates.sum.consumed);
+    document.getElementById("streams").textContent = aggregates.sum.streams;
 })();

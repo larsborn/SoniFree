@@ -79,18 +79,17 @@ def main():
                 json.dump(config, fp, indent=4)
             logger.info(f"Wrote {json_file_name}.")
 
-        json_file_name = os.path.join(args.json_result_dir, "sums.json")
+        json_file_name = os.path.join(args.json_result_dir, "aggregates.json")
         with open(json_file_name, "w") as fp:
-            json.dump(
-                {
+            aggregates = {
+                "sum": {
                     "followers": follower_repository.sum(),
                     "listeners": listener_repository.sum(),
                     "consumed": consumption_repository.sum(),
                     "streams": stream_repository.sum(),
                 },
-                fp,
-                indent=4,
-            )
+            }
+            json.dump(aggregates, fp, indent=4)
         logger.info(f"Wrote {json_file_name}.")
 
     elif args.output_strategy == "elastic":
