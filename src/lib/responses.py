@@ -23,9 +23,9 @@ class CustomEncoder(json.JSONEncoder):
 class ResponseManager:
     def __init__(self, meta_dir: str, payload_directory: str):
         if not os.path.exists(meta_dir) or not os.path.isdir(meta_dir):
-            raise ValueError(f"Meta dir path {meta_dir:r} not a directory.")
+            raise ValueError(f"Meta dir path {repr(meta_dir)} not a directory.")
         if not os.path.exists(payload_directory) or not os.path.isdir(payload_directory):
-            raise ValueError(f"Payload dir path {payload_directory:r} not a directory.")
+            raise ValueError(f"Payload dir path {repr(payload_directory)} not a directory.")
         self._meta_dir = meta_dir
         self._payload_directory = payload_directory
 
