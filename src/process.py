@@ -6,7 +6,13 @@ import os
 
 from lib.chart_js import ChartJsJsonGenerator
 from lib.factory import LoggerFactory, KeyFactory
-from lib.repository import FollowerRepository, ListenerRepository, ConsumptionRepository, StreamRepository
+from lib.repository import (
+    FollowerRepository,
+    ListenerRepository,
+    ConsumptionRepository,
+    StreamRepository,
+    StreamStartRepository,
+)
 from lib.responses import ResponseManager
 from lib.validator import Validator
 from normalizer.transformer import Transformer
@@ -32,40 +38,41 @@ def main():
 
     logger = LoggerFactory.get(args.debug)
     transformer = Transformer(logger)
-    char_generator = ChartJsJsonGenerator(transformer)
     validator = Validator(logger)
     response_manager = ResponseManager(args.meta_dir, args.payload_dir)
     by_provider = transformer.normalize(response_manager.find())
+    by_date = transformer.provider_to_date_flip(by_provider)
+    validator.validate(by_date)
+
     follower_repository = FollowerRepository(by_provider)
     listener_repository = ListenerRepository(by_provider)
     consumption_repository = ConsumptionRepository(by_provider)
     stream_repository = StreamRepository(by_provider)
-    by_date = transformer.provider_to_date_flip(by_provider)
-
-    validator.validate(by_date)
+    stream_start_repository = StreamStartRepository(by_provider)
+    char_generator = ChartJsJsonGenerator(transformer)
 
     if args.output_strategy == "chartjs":
 
         for file_name, config in [
             (
                 "follower_count.json",
-                char_generator.generate("Follower Count", by_date, lambda dp: dp.follower_count),
+                char_generator.generate("Follower Count", by_date, follower_repository),
             ),
             (
                 "listener_count.json",
-                char_generator.generate("Listener Count", by_date, lambda dp: dp.listener_count),
+                char_generator.generate("Listener Count", by_date, listener_repository),
             ),
             (
                 "consumption_seconds.json",
-                char_generator.generate("Consumption Seconds", by_date, lambda dp: dp.consumption_seconds),
+                char_generator.generate("Consumption Seconds", by_date, consumption_repository),
             ),
             (
                 "stream_count.json",
-                char_generator.generate("Stream Count", by_date, lambda dp: dp.stream_count),
+                char_generator.generate("Stream Count", by_date, stream_repository),
             ),
             (
                 "stream_start_count.json",
-                char_generator.generate("Stream Starts", by_date, lambda dp: dp.stream_start_count),
+                char_generator.generate("Stream Starts", by_date, stream_start_repository),
             ),
         ]:
             json_file_name = os.path.join(args.json_result_dir, file_name)

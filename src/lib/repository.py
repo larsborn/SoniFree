@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import abc
-from typing import Dict, Callable
+from typing import Dict, Callable, Optional
 
 from lib.model import Provider, DataPointStrDict, DataPoint
 
@@ -22,7 +22,7 @@ class AbstractRepository(abc.ABC):
         return 0
 
     def sum_by(self, provider: Provider):
-        raise NotImplementedError
+        return self.sum_field_by(provider, self.extract_number)
 
     def sum(self):
         ret = 0
@@ -30,34 +30,30 @@ class AbstractRepository(abc.ABC):
             ret += self.sum_by(provider)
         return ret
 
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        raise NotImplementedError
+
 
 class FollowerRepository(AbstractRepository):
-    def sum_by(self, provider: Provider):
-        def acc(p: DataPoint):
-            return p.follower_count
-
-        return self.sum_field_by(provider, acc)
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.follower_count
 
 
 class ListenerRepository(AbstractRepository):
-    def sum_by(self, provider: Provider):
-        def acc(p: DataPoint):
-            return p.listener_count
-
-        return self.sum_field_by(provider, acc)
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.listener_count
 
 
 class ConsumptionRepository(AbstractRepository):
-    def sum_by(self, provider: Provider):
-        def acc(p: DataPoint):
-            return p.consumption_seconds
-
-        return self.sum_field_by(provider, acc)
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.consumption_seconds
 
 
 class StreamRepository(AbstractRepository):
-    def sum_by(self, provider: Provider):
-        def acc(p: DataPoint):
-            return p.stream_count
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.stream_count
 
-        return self.sum_field_by(provider, acc)
+
+class StreamStartRepository(AbstractRepository):
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.stream_start_count
