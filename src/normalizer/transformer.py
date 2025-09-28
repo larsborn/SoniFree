@@ -47,6 +47,8 @@ class Transformer:
         cumulative_data_point = DataPoint(next(iter(by_date.values())).provider, 0, 0, 0, 0, 0, 0)
         ret = {}
         for k, v in by_date.items():
+            if v.no_data_set:
+                continue
             cumulative_data_point.follower_count = v.follower_count or 0
             cumulative_data_point.listener_count += v.listener_count or 0
             cumulative_data_point.consumption_seconds += v.consumption_seconds or 0
