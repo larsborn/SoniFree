@@ -6,6 +6,7 @@ import os
 
 from lib.chart_js import ChartJsJsonGenerator
 from lib.factory import LoggerFactory, KeyFactory
+from lib.model import Provider
 from lib.repository import (
     FollowerRepository,
     ListenerRepository,
@@ -88,7 +89,16 @@ def main():
                     "consumed": consumption_repository.sum(),
                     "streams": stream_repository.sum(),
                 },
+                "by_provider": {},
             }
+            for provider in Provider:
+                aggregates["by_provider"][provider.value] = {
+                    "followers": follower_repository.sum_by_provider(provider),
+                    "listeners": listener_repository.sum_by_provider(provider),
+                    "consumed": consumption_repository.sum_by_provider(provider),
+                    "streams": stream_repository.sum_by_provider(provider),
+                    "last_date": follower_repository.last_date_of_provider(provider),
+                }
             json.dump(aggregates, fp, indent=4)
         logger.info(f"Wrote {json_file_name}.")
 

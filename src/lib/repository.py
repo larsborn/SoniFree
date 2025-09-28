@@ -33,6 +33,9 @@ class AbstractRepository(abc.ABC):
 
         return 0
 
+    def last_date_of_provider(self, provider: Provider) -> Optional[str]:
+        return max(self._data[provider].keys())
+
     def sum(self):
         ret = 0
         for provider in Provider:

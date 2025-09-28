@@ -75,4 +75,14 @@ function humandReadbleSeconds(seconds) {
     document.getElementById("listeners").textContent = aggregates.sum.listeners;
     document.getElementById("consumed").textContent = humandReadbleSeconds(aggregates.sum.consumed);
     document.getElementById("streams").textContent = aggregates.sum.streams;
+
+    let lastDates = []
+
+    let providerList = Object.keys(aggregates.by_provider);
+    providerList.sort()
+    providerList.map((provider) => {
+        lastDates.push(`${provider} (${aggregates.by_provider[provider].last_date})`);
+    });
+
+    document.getElementById("last-dates").textContent = lastDates.join(", ");
 })();
