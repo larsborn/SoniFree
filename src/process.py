@@ -52,27 +52,26 @@ def main():
     char_generator = ChartJsJsonGenerator(transformer)
 
     if args.output_strategy == "chartjs":
-
         for file_name, config in [
             (
                 "follower_count.json",
-                char_generator.generate("Follower Count", by_date, follower_repository),
+                char_generator.generate("Follower Count", follower_repository),
             ),
             (
                 "listener_count.json",
-                char_generator.generate("Listener Count", by_date, listener_repository),
+                char_generator.generate("Listener Count", listener_repository),
             ),
             (
                 "consumption_seconds.json",
-                char_generator.generate("Consumption Seconds", by_date, consumption_repository),
+                char_generator.generate("Consumption Seconds", consumption_repository),
             ),
             (
                 "stream_count.json",
-                char_generator.generate("Stream Count", by_date, stream_repository),
+                char_generator.generate("Stream Count", stream_repository),
             ),
             (
                 "stream_start_count.json",
-                char_generator.generate("Stream Starts", by_date, stream_start_repository),
+                char_generator.generate("Stream Starts", stream_start_repository),
             ),
         ]:
             json_file_name = os.path.join(args.json_result_dir, file_name)

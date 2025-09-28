@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from typing import Dict, Optional, List
 
-from lib.model import DataPoint, Provider, PROVIDER_COLORS
+from lib.model import PROVIDER_COLORS
 from lib.repository import AbstractRepository
 from normalizer.transformer import Transformer
 
@@ -11,23 +11,16 @@ class ChartJsJsonGenerator:
     def __init__(self, transformer: Transformer):
         self._transformer = transformer
 
-    def generate(
-        self,
-        chart_label: str,
-        by_date: Dict[str, Dict[Provider, DataPoint]],
-        repository: AbstractRepository,
-    ) -> Dict:
-        labels = list(by_date.keys())
-        by_provider = self._transformer.date_to_provider_flip(by_date)
+    def generate(self, chart_label: str, repository: AbstractRepository) -> Dict:
         datasets = [
             self._generate_dataset(
                 provider.value,
                 PROVIDER_COLORS[provider],
-                [repository.extract_number(dp) for dp in by_date.values()],
+                list(repository.find_by_provider(provider)),
             )
-            for provider, by_date in by_provider.items()
+            for provider in repository.providers()
         ]
-        return self._generate_config(chart_label, labels, datasets)
+        return self._generate_config(chart_label, repository.get_dates(), datasets)
 
     @staticmethod
     def _generate_dataset(label: str, color: str, data: List[Optional[int]]):
