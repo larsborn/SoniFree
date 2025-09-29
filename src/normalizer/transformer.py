@@ -29,8 +29,7 @@ class Transformer:
                 raise ValueError(f"Cannot route response: {response}")
 
         for provider in by_provider.keys():
-            if provider in [Provider.SPOTIFY, Provider.AMAZON]:
-                by_provider[provider] = self._normalize_to_cumulative(by_provider[provider])
+            by_provider[provider] = self._normalize_to_cumulative(provider, by_provider[provider])
             by_provider[provider] = self._populate_provider(provider, by_provider[provider])
             by_provider[provider] = self._filter_all_none(by_provider[provider])
 
@@ -40,17 +39,23 @@ class Transformer:
         return by_provider
 
     @staticmethod
-    def _normalize_to_cumulative(by_date: DataPointStrDict) -> DataPointStrDict:
+    def _normalize_to_cumulative(provider: Provider, by_date: DataPointStrDict) -> DataPointStrDict:
+        if provider not in [Provider.SPOTIFY, Provider.AMAZON]:
+            return by_date
         if len(by_date) == 0:
             return {}
 
-        cumulative_data_point = DataPoint(next(iter(by_date.values())).provider, 0, 0, 0, 0, 0, 0)
+        cumulative_data_point = DataPoint(next(iter(by_date.values())).provider, 0, 0, 0, 0, 0, 0, 0)
         ret = {}
         for k, v in by_date.items():
             if v.no_data_set:
                 continue
-            cumulative_data_point.follower_count = v.follower_count or 0
+            if provider == Provider.AMAZON:
+                cumulative_data_point.follower_count += v.follower_count or 0
+            else:
+                cumulative_data_point.follower_count = v.follower_count or 0
             cumulative_data_point.listener_count += v.listener_count or 0
+            cumulative_data_point.engaged_listener_count += v.engaged_listener_count or 0
             cumulative_data_point.consumption_seconds += v.consumption_seconds or 0
             cumulative_data_point.foreground_consumption_seconds += v.foreground_consumption_seconds or 0
             cumulative_data_point.stream_count += v.stream_count or 0

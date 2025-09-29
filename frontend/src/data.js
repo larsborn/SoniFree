@@ -49,6 +49,13 @@ function humandReadbleSeconds(seconds) {
     }))
     new Chart(document.getElementById('listener_count'), listenerCountJson);
 
+    const engagedListenerCountJson = require('./data/engaged_listener_count.json');
+    engagedListenerCountJson.data.datasets = engagedListenerCountJson.data.datasets.map((dataset) => ({
+        ...dataset,
+        "backgroundColor": transparentize(dataset.borderColor, 0.5),
+    }))
+    new Chart(document.getElementById('engaged_listener_count'), engagedListenerCountJson);
+
     const consumptionSecondsCountJson = require('./data/consumption_seconds.json');
     consumptionSecondsCountJson.data.datasets = consumptionSecondsCountJson.data.datasets.map((dataset) => ({
         ...dataset,

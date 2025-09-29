@@ -69,6 +69,7 @@ class DataPoint:
     provider: Optional[Provider] = None
     follower_count: Optional[int] = None
     listener_count: Optional[int] = None
+    engaged_listener_count: Optional[int] = None
     consumption_seconds: Optional[int] = None
     foreground_consumption_seconds: Optional[int] = None
     stream_count: Optional[int] = None
@@ -79,6 +80,7 @@ class DataPoint:
         return (
             self.follower_count is None
             and self.listener_count is None
+            and self.engaged_listener_count is None
             and self.consumption_seconds is None
             and self.foreground_consumption_seconds is None
             and self.stream_count is None
@@ -91,6 +93,7 @@ class DataPoint:
             "scraper": self.provider.value or 0,
             "follower_count": self.follower_count or 0,
             "listener_count": self.listener_count or 0,
+            "engaged_listener_count": self.engaged_listener_count or 0,
             "consumption_seconds": self.consumption_seconds or 0,
             "foreground_consumption_seconds": self.foreground_consumption_seconds or 0,
             "stream_count": self.stream_count or 0,
@@ -102,6 +105,7 @@ class DataPoint:
             self.provider,
             self.follower_count,
             self.listener_count,
+            self.engaged_listener_count,
             self.consumption_seconds,
             self.foreground_consumption_seconds,
             self.stream_count,

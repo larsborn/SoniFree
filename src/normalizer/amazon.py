@@ -33,19 +33,33 @@ class Amazon(BaseNormalizationStrategy):
             pass
         if "playsAggregate" in data:
             pass
-        if "playsTimeSeries" in data:
-            for row in data["playsTimeSeries"]:
-                k = row["time"][:10]
-                by_date[k].stream_count = max(by_date[k].stream_count, row["value"], key=NoneComparator)
         if "playsTotals" in data:
             pass
         if "startsAggregate" in data:
             pass
+        if "playsTimeSeries" in data:
+            for row in data["playsTimeSeries"]:
+                k = row["time"][:10]
+                by_date[k].stream_count = max(by_date[k].stream_count, row["value"], key=NoneComparator)
         if "startsTimeSeries" in data:
             for row in data["startsTimeSeries"]:
                 k = row["time"][:10]
                 by_date[k].stream_start_count = max(
                     by_date[k].stream_start_count, row["value"], key=NoneComparator
+                )
+        if "listenersTimeSeries" in data:
+            for row in data["listenersTimeSeries"]:
+                k = row["time"][:10]
+                by_date[k].listener_count = max(by_date[k].listener_count, row["value"], key=NoneComparator)
+        if "followsTimeSeries" in data:
+            for row in data["followsTimeSeries"]:
+                k = row["time"][:10]
+                by_date[k].follower_count = max(by_date[k].follower_count, row["value"], key=NoneComparator)
+        if "engagedListenersTimeSeries" in data:
+            for row in data["engagedListenersTimeSeries"]:
+                k = row["time"][:10]
+                by_date[k].engaged_listener_count = max(
+                    by_date[k].engaged_listener_count, row["value"], key=NoneComparator
                 )
         if "startsTotals" in data:
             pass

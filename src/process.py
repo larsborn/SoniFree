@@ -13,6 +13,7 @@ from lib.repository import (
     ConsumptionRepository,
     StreamRepository,
     StreamStartRepository,
+    EngagedListenerRepository,
 )
 from lib.responses import ResponseManager
 from lib.validator import Validator
@@ -47,6 +48,7 @@ def main():
 
     follower_repository = FollowerRepository(by_provider)
     listener_repository = ListenerRepository(by_provider)
+    engaged_listener_repository = EngagedListenerRepository(by_provider)
     consumption_repository = ConsumptionRepository(by_provider)
     stream_repository = StreamRepository(by_provider)
     stream_start_repository = StreamStartRepository(by_provider)
@@ -61,6 +63,10 @@ def main():
             (
                 "listener_count.json",
                 char_generator.generate("Listener Count", listener_repository),
+            ),
+            (
+                "engaged_listener_count.json",
+                char_generator.generate("Engaged Listener Count", engaged_listener_repository),
             ),
             (
                 "consumption_seconds.json",
@@ -95,6 +101,7 @@ def main():
                 aggregates["by_provider"][provider.value] = {
                     "followers": follower_repository.sum_by_provider(provider),
                     "listeners": listener_repository.sum_by_provider(provider),
+                    "engaged_listeners": engaged_listener_repository.sum_by_provider(provider),
                     "consumed": consumption_repository.sum_by_provider(provider),
                     "streams": stream_repository.sum_by_provider(provider),
                     "last_date": follower_repository.last_date_of_provider(provider),

@@ -66,6 +66,11 @@ class ListenerRepository(AbstractRepository):
         return dp.listener_count
 
 
+class EngagedListenerRepository(AbstractRepository):
+    def extract_number(self, dp: DataPoint) -> Optional[int]:
+        return dp.engaged_listener_count
+
+
 class ConsumptionRepository(AbstractRepository):
     def extract_number(self, dp: DataPoint) -> Optional[int]:
         return dp.consumption_seconds
