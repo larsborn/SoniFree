@@ -7,6 +7,7 @@ import time
 from json import JSONDecodeError
 from typing import Iterable, Dict, Optional
 
+from anticaptchaofficial.recaptchav2proxyless import recaptchaV2Proxyless
 from selenium import webdriver
 from selenium.common import WebDriverException
 from selenium.webdriver.chrome.options import Options
@@ -30,10 +31,15 @@ class SeleniumFactory:
         return selenium
 
 
+class ScraperException(Exception):
+    pass
+
+
 class Scraper(abc.ABC):
-    def __init__(self, name: str, **kwargs):
+    def __init__(self, name: str, recaptcha_solver: Optional[recaptchaV2Proxyless], **kwargs):
         super().__init__(**kwargs)
         self._name = name
+        self._recaptcha_solver = recaptcha_solver
 
     @property
     def name(self):

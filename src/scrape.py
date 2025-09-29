@@ -3,6 +3,8 @@
 import argparse
 import os
 
+from anticaptchaofficial.recaptchav2proxyless import recaptchaV2Proxyless
+
 from lib.factory import LoggerFactory
 from lib.model import SpotifyConfig, AmazonConfig
 from lib.responses import ResponseManager
@@ -30,6 +32,13 @@ def main():
     logger = LoggerFactory.get(args.debug)
     response_manager = ResponseManager(args.meta_dir, args.payload_dir)
     selenium_factory = SeleniumFactory(args.chrome_executable_path)
+    anticaptcha_api_key = os.getenv("ANTICAPTCHA_API_KEY")
+    if anticaptcha_api_key:
+        recaptcha_solver = recaptchaV2Proxyless()
+        recaptcha_solver.set_verbose(1)
+        recaptcha_solver.set_key(anticaptcha_api_key)
+    else:
+        recaptcha_solver = None
     scraper_configs = [
         (Spotify, SpotifyConfig(args.spotify_user_name, args.spotify_password, args.spotify_podcast_id)),
         # (Apple, AppleConfig(args.apple_user_name, args.apple_password, args.apple_podcast_id)),
@@ -50,6 +59,7 @@ def main():
             logger=logger,
             selenium_factory=selenium_factory,
             config=scraper_config,
+            recaptcha_solver=recaptcha_solver,
             name=scraper_cls.__name__,
         )
         scraper.prepare()

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging
-from typing import Iterable
+from typing import Iterable, Optional
 
+from anticaptchaofficial.recaptchav2proxyless import recaptchaV2Proxyless
 from selenium.webdriver.common.by import By
 
 from lib.model import AppleConfig, Response
@@ -11,9 +12,16 @@ from lib.scraper import SeleniumFactory, Selenium, Scraper
 
 class Apple(Selenium, Scraper):
     def __init__(
-        self, logger: logging.Logger, selenium_factory: SeleniumFactory, config: AppleConfig, name: str
+        self,
+        logger: logging.Logger,
+        selenium_factory: SeleniumFactory,
+        config: AppleConfig,
+        recaptcha_solver: Optional[recaptchaV2Proxyless],
+        name: str,
     ):
-        super().__init__(logger=logger, selenium_factory=selenium_factory, name=name)
+        super().__init__(
+            logger=logger, selenium_factory=selenium_factory, recaptcha_solver=recaptcha_solver, name=name
+        )
         self._config = config
 
     def prepare(self):
