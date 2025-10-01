@@ -27,11 +27,13 @@ giving creators reliable insights without sacrificing independence.
 
 ## Supporter Podcast Providers
 
-| Provider | Scraper  | Normalizer       |
-|----------|----------|------------------|
-| Amazon   | ✅WIP     | ✅WIP             |
-| Apple    | 🚧WIP    | ❌Not Implemented |
-| Spotify  | ✅Working | ✅Working         |
+| Provider      | Scraper          | Normalizer       |
+|---------------|------------------|------------------|
+| Amazon        | ✅WIP             | ✅WIP             |
+| Apple         | 🚧WIP            | ❌Not Implemented |
+| Podbean       | ❌Not Implemented | ❌Not Implemented |
+| Spotify       | ✅Working         | ✅Working         |
+| YouTube Music | ❌Not Implemented | ❌Not Implemented |
 
 ## Technical Design
 
