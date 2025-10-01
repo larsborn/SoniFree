@@ -1,4 +1,6 @@
+clean:
+	rm -fr dist
 dev:
 	npm run dev
-build:
+build: clean
 	npm run build
