@@ -34,48 +34,20 @@ function humandReadbleSeconds(seconds) {
         const alpha = opacity === undefined ? 0.5 : 1 - opacity;
         return colorLib(value).alpha(alpha).rgbString();
     }
+    function dumpDiagram(id, data) {
+        data.data.datasets = data.data.datasets.map((dataset) => ({
+            ...dataset,
+            "backgroundColor": transparentize(dataset.borderColor, 0.5),
+        }))
+        new Chart(document.getElementById(id), data);
+    }
 
-    const followerCountJson = require('./data/follower_count.json');
-    followerCountJson.data.datasets = followerCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('follower_count'), followerCountJson);
-
-    const listenerCountJson = require('./data/listener_count.json');
-    listenerCountJson.data.datasets = listenerCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('listener_count'), listenerCountJson);
-
-    const engagedListenerCountJson = require('./data/engaged_listener_count.json');
-    engagedListenerCountJson.data.datasets = engagedListenerCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('engaged_listener_count'), engagedListenerCountJson);
-
-    const consumptionSecondsCountJson = require('./data/consumption_seconds.json');
-    consumptionSecondsCountJson.data.datasets = consumptionSecondsCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('consumption_seconds'), consumptionSecondsCountJson);
-
-    const streamCountJson = require('./data/stream_count.json');
-    streamCountJson.data.datasets = streamCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('stream_count'), streamCountJson);
-
-    const streamStartCountJson = require('./data/stream_start_count.json');
-    streamStartCountJson.data.datasets = streamStartCountJson.data.datasets.map((dataset) => ({
-        ...dataset,
-        "backgroundColor": transparentize(dataset.borderColor, 0.5),
-    }))
-    new Chart(document.getElementById('stream_start_count'), streamStartCountJson);
+    dumpDiagram("follower_count", require(`./data/follower_count.json`));
+    dumpDiagram("listener_count", require(`./data/listener_count.json`));
+    dumpDiagram("engaged_listener_count", require(`./data/engaged_listener_count.json`));
+    dumpDiagram("consumption_seconds", require(`./data/consumption_seconds.json`));
+    dumpDiagram("stream_count", require(`./data/stream_count.json`));
+    dumpDiagram("stream_start_count", require(`./data/stream_start_count.json`));
 
     const aggregates = require('./data/aggregates.json');
     document.getElementById("followers").textContent = aggregates.sum.followers;
