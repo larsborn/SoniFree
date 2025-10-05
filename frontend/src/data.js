@@ -1,6 +1,33 @@
 import colorLib from '@kurkle/color';
 import Chart from 'chart.js/auto'
 
+const verticalLinePlugin = {
+    getLinePosition: function (chart, pointIndex) {
+        const meta = chart.getDatasetMeta(0); // first dataset is used to discover X coordinate of a point
+        const data = meta.data;
+        return data[pointIndex].x;
+    },
+
+    renderVerticalLine: function (chartInstance, pointIndex, caption) {
+        const lineLeftOffset = this.getLinePosition(chartInstance, pointIndex);
+        const scale = chartInstance.scales.y;
+
+        chartInstance.ctx.beginPath();
+        chartInstance.ctx.strokeStyle = '#5a0d0d';
+        chartInstance.ctx.moveTo(lineLeftOffset, scale.top);
+        chartInstance.ctx.lineTo(lineLeftOffset, scale.bottom);
+        chartInstance.ctx.stroke();
+    },
+
+    beforeDatasetsDraw: function (chart, easing) {
+        if (chart.config._config.lineAtIndex) {
+            chart.config._config.lineAtIndex.forEach(
+                ({index, caption}) => this.renderVerticalLine(chart, index, caption)
+            );
+        }
+    }
+};
+
 function humandReadbleSeconds(seconds) {
     const units = {
         "year": 24 * 60 * 60 * 365,
@@ -34,12 +61,13 @@ function humandReadbleSeconds(seconds) {
         const alpha = opacity === undefined ? 0.5 : 1 - opacity;
         return colorLib(value).alpha(alpha).rgbString();
     }
+
     function dumpDiagram(id, data) {
         data.data.datasets = data.data.datasets.map((dataset) => ({
             ...dataset,
             "backgroundColor": transparentize(dataset.borderColor, 0.5),
         }))
-        new Chart(document.getElementById(id), data);
+        new Chart(document.getElementById(id), {...data, plugins: [verticalLinePlugin]});
     }
 
     dumpDiagram("follower_count", require(`./data/follower_count.json`));

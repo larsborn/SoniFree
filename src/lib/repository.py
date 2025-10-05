@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import abc
+import json
+import os.path
 from typing import Dict, Optional, List, Iterator
 
-from lib.model import Provider, DataPointStrDict, DataPoint
+from lib.model import Provider, DataPointStrDict, DataPoint, Event
 
 
 class AbstractRepository(abc.ABC):
@@ -84,3 +86,16 @@ class StreamRepository(AbstractRepository):
 class StreamStartRepository(AbstractRepository):
     def extract_number(self, dp: DataPoint) -> Optional[int]:
         return dp.stream_start_count
+
+
+class EventsRepository:
+    def __init__(self, file_name: str):
+        self._data = []
+        if os.path.exists(file_name):
+            with open(file_name, "rb") as fp:
+                for line in fp:
+                    row = json.loads(line.strip())
+                    self._data.append(Event(name=row["name"], date=row["date"]))
+
+    def all(self) -> List[Event]:
+        return self._data

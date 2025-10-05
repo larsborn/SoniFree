@@ -14,6 +14,7 @@ from lib.repository import (
     StreamRepository,
     StreamStartRepository,
     EngagedListenerRepository,
+    EventsRepository,
 )
 from lib.responses import ResponseManager
 from lib.validator import Validator
@@ -25,6 +26,7 @@ def main():
     parser.add_argument("--debug", "-d", action="store_true")
     parser.add_argument("--meta-dir", default=os.getenv("META_DIR"))
     parser.add_argument("--payload-dir", default=os.getenv("PAYLOAD_DIR"))
+    parser.add_argument("--event-marker-file-name", default=os.getenv("EVENT_MARKER_FILE_NAME"))
     parser.add_argument(
         "--output-strategy",
         default=os.getenv("OUTPUT_STRATEGY", "chartjs"),
@@ -46,6 +48,7 @@ def main():
     by_date = transformer.provider_to_date_flip(by_provider)
     validator.validate(by_date)
 
+    event_repository = EventsRepository(args.event_marker_file_name)
     follower_repository = FollowerRepository(by_provider)
     listener_repository = ListenerRepository(by_provider)
     engaged_listener_repository = EngagedListenerRepository(by_provider)
@@ -54,31 +57,32 @@ def main():
     stream_start_repository = StreamStartRepository(by_provider)
     char_generator = ChartJsJsonGenerator(transformer)
 
+    events = event_repository.all()
     if args.output_strategy == "chartjs":
         for file_name, config in [
             (
                 "follower_count.json",
-                char_generator.generate("Follower Count", follower_repository),
+                char_generator.generate("Follower Count", follower_repository, events),
             ),
             (
                 "listener_count.json",
-                char_generator.generate("Listener Count", listener_repository),
+                char_generator.generate("Listener Count", listener_repository, events),
             ),
             (
                 "engaged_listener_count.json",
-                char_generator.generate("Engaged Listener Count", engaged_listener_repository),
+                char_generator.generate("Engaged Listener Count", engaged_listener_repository, events),
             ),
             (
                 "consumption_seconds.json",
-                char_generator.generate("Consumption Seconds", consumption_repository),
+                char_generator.generate("Consumption Seconds", consumption_repository, events),
             ),
             (
                 "stream_count.json",
-                char_generator.generate("Stream Count", stream_repository),
+                char_generator.generate("Stream Count", stream_repository, events),
             ),
             (
                 "stream_start_count.json",
-                char_generator.generate("Stream Starts", stream_start_repository),
+                char_generator.generate("Stream Starts", stream_start_repository, events),
             ),
         ]:
             json_file_name = os.path.join(args.json_result_dir, file_name)

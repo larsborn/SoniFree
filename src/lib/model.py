@@ -114,3 +114,9 @@ class DataPoint:
 
 
 DataPointStrDict = Union[DefaultDict[str, DataPoint], Dict[str, DataPoint]]
+
+
+@dataclass
+class Event:
+    date: str
+    name: str
