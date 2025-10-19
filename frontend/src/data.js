@@ -28,7 +28,7 @@ const verticalLinePlugin = {
     }
 };
 
-function humandReadbleSeconds(seconds) {
+function humanReadableSeconds(seconds) {
     const units = {
         "year": 24 * 60 * 60 * 365,
         "month": 24 * 60 * 60 * 30,
@@ -80,7 +80,7 @@ function humandReadbleSeconds(seconds) {
     const aggregates = require('./data/aggregates.json');
     document.getElementById("followers").textContent = aggregates.sum.followers;
     document.getElementById("listeners").textContent = aggregates.sum.listeners;
-    document.getElementById("consumed").textContent = humandReadbleSeconds(aggregates.sum.consumed);
+    document.getElementById("consumed").textContent = humanReadableSeconds(aggregates.sum.consumed);
     document.getElementById("streams").textContent = aggregates.sum.streams;
 
     let lastDates = []
