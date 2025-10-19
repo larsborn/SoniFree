@@ -3,9 +3,8 @@ import Chart from 'chart.js/auto'
 
 const verticalLinePlugin = {
     getLinePosition: function (chart, pointIndex) {
-        const meta = chart.getDatasetMeta(0); // first dataset is used to discover X coordinate of a point
-        const data = meta.data;
-        return data[pointIndex].x;
+        const firstDatasetMeta = chart.getDatasetMeta(0);
+        return firstDatasetMeta.data[pointIndex].x;
     },
 
     renderVerticalLine: function (chartInstance, pointIndex, caption) {
