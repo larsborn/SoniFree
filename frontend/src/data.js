@@ -11,11 +11,12 @@ const verticalLinePlugin = {
         const lineLeftOffset = this.getLinePosition(chartInstance, pointIndex);
         const scale = chartInstance.scales.y;
 
-        chartInstance.ctx.beginPath();
-        chartInstance.ctx.strokeStyle = '#5a0d0d';
-        chartInstance.ctx.moveTo(lineLeftOffset, scale.top);
-        chartInstance.ctx.lineTo(lineLeftOffset, scale.bottom);
-        chartInstance.ctx.stroke();
+        const ctx = chartInstance.ctx;
+        ctx.beginPath();
+        ctx.strokeStyle = '#5a0d0d';
+        ctx.moveTo(lineLeftOffset, scale.top);
+        ctx.lineTo(lineLeftOffset, scale.bottom);
+        ctx.stroke();
     },
 
     beforeDatasetsDraw: function (chart, easing) {
