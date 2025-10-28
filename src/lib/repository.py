@@ -30,7 +30,7 @@ class AbstractRepository(abc.ABC):
                 latest_data_point = self._data[provider][date]
             except KeyError:
                 continue
-            if self.extract_number(latest_data_point) is not None:
+            if self.extract_number(latest_data_point):
                 return self.extract_number(latest_data_point)
 
         return 0
@@ -49,7 +49,9 @@ class AbstractRepository(abc.ABC):
         prev = 0
         for date in sorted(dates):
             try:
-                prev = self.extract_number(self._data[provider][date])
+                next_val = self.extract_number(self._data[provider][date])
+                if next_val:
+                    prev = next_val
             except KeyError:
                 pass
             yield prev
